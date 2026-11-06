@@ -1,0 +1,133 @@
+
+import { useState } from "react";
+import "./style.css";
+
+const assets = [
+  { name: "Bitcoin", symbol: "BTC", icon: "₿", network: "Bitcoin" },
+  { name: "Ethereum", symbol: "ETH", icon: "Ξ", network: "Ethereum" },
+  { name: "Tether", symbol: "USDT", icon: "₮", network: "Stablecoin" },
+  { name: "Toncoin", symbol: "TON", icon: "◆", network: "TON" },
+  { name: "BNB", symbol: "BNB", icon: "◆", network: "BNB Chain" }
+];
+
+export default function App() {
+  const [page, setPage] = useState("home");
+  const [selected, setSelected] = useState("");
+  const [message, setMessage] = useState("");
+
+  function notify(text: string) {
+    setMessage(text);
+    setTimeout(() => setMessage(""), 2500);
+  }
+
+  return (
+    <main className="app">
+      <header className="header">
+        <div className="brand">
+          <div className="logo">Z</div>
+          <div>
+            <h2>ZAK WALLET</h2>
+            <small>DIGITAL ASSETS</small>
+          </div>
+        </div>
+        <button className="settings" onClick={() => setPage("settings")}>⚙</button>
+      </header>
+
+      {page === "home" && <>
+        <p className="muted">ОБЗОР КОШЕЛЬКА</p>
+        <section className="balance">
+          <span>Общий баланс</span>
+          <h1>— — —</h1>
+          <small>Данные блокчейна не подключены</small>
+        </section>
+
+        <div className="actions">
+          <button onClick={() => notify("Получение пока не подключено")}>↓<span>Получить</span></button>
+          <button onClick={() => notify("Отправка пока не подключена")}>↑<span>Отправить</span></button>
+          <button onClick={() => notify("Обмен пока не подключён")}>⇄<span>Обмен</span></button>
+        </div>
+
+        <div className="sectionTitle">
+          <h3>Активы</h3>
+          <button onClick={() => setPage("assets")}>Все →</button>
+        </div>
+
+        {assets.slice(0, 3).map(a => (
+          <Asset key={a.symbol} asset={a} onClick={() => {
+            setSelected(a.symbol);
+            setPage("detail");
+          }} />
+        ))}
+      </>}
+
+      {page === "assets" && <>
+        <h1 className="pageTitle">Активы</h1>
+        {assets.map(a => (
+          <Asset key={a.symbol} asset={a} onClick={() => {
+            setSelected(a.symbol);
+            setPage("detail");
+          }} />
+        ))}
+      </>}
+
+      {page === "detail" && <>
+        <button className="back" onClick={() => setPage("assets")}>← Назад</button>
+        <h1 className="pageTitle">{selected}</h1>
+        <section className="balance">
+          <span>Баланс актива</span>
+          <h1>— — —</h1>
+          <small>Публичные данные сети пока не подключены</small>
+        </section>
+      </>}
+
+      {page === "history" && <>
+        <h1 className="pageTitle">История</h1>
+        <section className="empty">
+          <div>◷</div>
+          История операций пока пуста.
+        </section>
+      </>}
+
+      {page === "settings" && <>
+        <h1 className="pageTitle">Настройки</h1>
+        <section className="settingRow">Название <b>ZAK Wallet</b></section>
+        <section className="settingRow">Сеть <b>Не подключена</b></section>
+        <section className="settingRow">Версия <b>1.0.0</b></section>
+        <section className="settingRow">Безопасность <b>Не настроена</b></section>
+      </>}
+
+      <nav className="navigation">
+        {[
+          ["home", "⌂", "Главная"],
+          ["assets", "◈", "Активы"],
+          ["history", "◷", "История"],
+          ["settings", "⚙", "Настройки"]
+        ].map(([id, icon, label]) => (
+          <button key={id} className={page === id ? "active" : ""}
+            onClick={() => setPage(id)}>
+            <span>{icon}</span>{label}
+          </button>
+        ))}
+      </nav>
+
+      {message && <div className="toast">{message}</div>}
+    </main>
+  );
+}
+
+function Asset({ asset, onClick }: {
+  asset: { name: string; symbol: string; icon: string; network: string };
+  onClick: () => void;
+}) {
+  return (
+    <button className="asset" onClick={onClick}>
+      <div className="coin">{asset.icon}</div>
+      <div className="assetInfo">
+        <b>{asset.name}</b>
+        <small>{asset.network}</small>
+      </div>
+      <strong>{asset.symbol}</strong>
+      <span className="arrow">›</span>
+    </button>
+  );
+}
