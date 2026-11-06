@@ -2,114 +2,13 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#101114">
-<title>ZAK Wallet</title>
-<style>
-*{box-sizing:border-box}
-body{
- margin:0;background:#101114;color:#fff;
- font-family:Arial,sans-serif;padding:22px;
-}
-header{display:flex;align-items:center;justify-content:space-between}
-.logo{font-size:23px;font-weight:800}
-.logo span{color:#d6b56d}
-.tag{color:#d6b56d;font-size:11px}
-.balance{
- margin-top:35px;padding:25px;border-radius:22px;
- background:linear-gradient(140deg,#303039,#191a20);
- border:1px solid #41414a;
-}
-.muted{color:#92939c;font-size:13px}
-.amount{font-size:38px;font-weight:bold;margin:12px 0}
-.actions{display:flex;gap:10px;margin-top:25px}
-button{
- border:0;border-radius:12px;padding:14px;
- background:#d6b56d;color:#171717;
- font-weight:bold;flex:1;font-size:14px;
-}
-.secondary{background:#383940;color:white}
-h3{margin-top:32px}
-.asset{
- display:flex;align-items:center;gap:13px;
- padding:16px 0;border-bottom:1px solid #303139;
-}
-.coin{
- width:42px;height:42px;border-radius:50%;
- background:#303139;display:grid;
- place-items:center;color:#d6b56d;font-weight:bold;
-}
-.info{flex:1}
-.info strong{display:block;font-size:14px}
-.info small{color:#92939c}
-.value{font-weight:bold}
-nav{
- position:fixed;bottom:0;left:0;width:100%;
- background:#1c1d22;display:flex;
- padding:15px 5px;
- border-top:1px solid #383940;
-}
-nav button{background:none;color:#999;font-size:12px}
-nav button.active{color:#d6b56d}
-#message{color:#d6b56d;font-size:12px;margin-top:20px}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090909">
+  <title>ZAK Wallet</title>
 </head>
 <body>
-<header>
- <div class="logo"><span>Z</span>AK WALLET</div>
- <div class="tag">TESTNET</div>
-</header>
-
-<section class="balance">
- <div class="muted">Общий баланс</div>
- <div class="amount">— USD</div>
- <div class="muted">Тестовый кошелёк</div>
- <div class="actions">
-  <button onclick="notice('Получение пока не подключено')">Получить</button>
-  <button class="secondary" onclick="notice('Отправка пока не подключена')">Отправить</button>
- </div>
-</section>
-
-<h3>Мои активы</h3>
-<div id="assets"></div>
-
-<div id="message">
-Демонстрационная версия. Реальные деньги не используются.
-</div>
-
-<nav>
- <button class="active" onclick="tab('Кошелёк')">⌂<br>Кошелёк</button>
- <button onclick="tab('История операций')">↔<br>История</button>
- <button onclick="tab('Настройки')">⚙<br>Настройки</button>
-</nav>
-
-<script>
-const coins=[
- ['T','Toncoin','TON'],
- ['$','Tether USD','TRC20'],
- ['Ξ','Ethereum','ERC20'],
- ['B','BNB','BEP20'],
- ['₿','Bitcoin','BTC']
-];
-
-document.getElementById('assets').innerHTML=
-coins.map(c=>`
-<div class="asset">
- <div class="coin">${c[0]}</div>
- <div class="info">
-  <strong>${c[1]}</strong>
-  <small>${c[2]}</small>
- </div>
- <div class="value">—</div>
-</div>`).join('');
-
-function notice(text){
- document.getElementById('message').textContent=text;
-}
-function tab(name){
- notice('Раздел: '+name+'. Функция будет подключена позже.');
-}
-</script>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
 </body>
 </html>
